@@ -9,10 +9,15 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.example.Bankmangement.security.JwtAuthenticationEntryPoint;
+import com.example.Bankmangement.security.JwtAuthenticationFilter;
 
 @Configuration
 @EnableMethodSecurity
@@ -21,8 +26,14 @@ public class SecurityConfig{
 	
 	private UserDetailsService userDetailsService;
 	
-	public SecurityConfig(UserDetailsService userDetailsService){
+	private JwtAuthenticationFilter authenticationFilter;
+	
+	private JwtAuthenticationEntryPoint authenticationEntryPoint;
+	
+	public SecurityConfig(UserDetailsService userDetailsService, JwtAuthenticationEntryPoint authenticationEntryPoint, JwtAuthenticationFilter authenticationFilter  ){
 		this.userDetailsService=userDetailsService;
+		this.authenticationEntryPoint = authenticationEntryPoint;
+		this.authenticationFilter = authenticationFilter;
 	}
 	
 	@Bean
@@ -43,8 +54,11 @@ public class SecurityConfig{
 	            .authorizeHttpRequests((authz) -> authz
 	            		.antMatchers("/api/auth/**").permitAll()
 	            		.antMatchers("/error").permitAll()
-	                .anyRequest().authenticated()
+	                .anyRequest().authenticated()).exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint)
+	                	).sessionManagement(session -> session
+	                			.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 	            );
+	        http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 	        return http.build();
 	    }
 }

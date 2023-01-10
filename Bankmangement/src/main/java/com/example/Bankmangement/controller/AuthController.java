@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 //import org.springframework.web.bind.annotation.RestController;
 
+import com.example.Bankmangement.payload.JwtAuthResponse;
 import com.example.Bankmangement.payload.LoginDto;
 import com.example.Bankmangement.payload.RegisterDto;
 import com.example.Bankmangement.service.AuthService;
@@ -29,13 +30,16 @@ public class AuthController {
 	//login validation 
 	@PostMapping("/login")
 
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto)
+    public ResponseEntity< JwtAuthResponse> login(@RequestBody LoginDto loginDto)
 
     {
 
-        String response=authService.login(loginDto);
+        String token =authService.login(loginDto);
+        
+        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
+        jwtAuthResponse.setAccessToken(token);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(jwtAuthResponse);
 
        
 

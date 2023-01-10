@@ -16,6 +16,7 @@ import com.example.Bankmangement.payload.LoginDto;
 import com.example.Bankmangement.payload.RegisterDto;
 import com.example.Bankmangement.repository.RoleRepository;
 import com.example.Bankmangement.repository.UserRepository;
+import com.example.Bankmangement.security.JwtTokenProvider;
 import com.example.Bankmangement.service.AuthService;
 
 @Service
@@ -26,12 +27,15 @@ public class AuthServiceImpl implements AuthService{
 	private UserRepository userRepository;
 	private RoleRepository roleRepository;
 	private PasswordEncoder passwordEncoder;
+	private JwtTokenProvider jwtTokenProvider;
 	
-	public AuthServiceImpl(AuthenticationManager authenticationManager ,UserRepository userRepository,RoleRepository roleRepository,PasswordEncoder passwordEncoder) {
+	public AuthServiceImpl(AuthenticationManager authenticationManager ,UserRepository userRepository,RoleRepository roleRepository,PasswordEncoder passwordEncoder,
+			JwtTokenProvider jwtTokenProvider		) {
 		this.authenticationManager = authenticationManager;
 		this.userRepository=userRepository;
 		this.roleRepository=roleRepository;
-		this.passwordEncoder=passwordEncoder;	
+		this.passwordEncoder=passwordEncoder;
+		this.jwtTokenProvider= jwtTokenProvider;
 	}
 
 	@Override
@@ -41,8 +45,10 @@ public class AuthServiceImpl implements AuthService{
 	Authentication authentication=	authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(),loginDto.getPassword()));
 	
 	SecurityContextHolder.getContext().setAuthentication(authentication);	
+	
+	String token = jwtTokenProvider.generateToken(authentication);
 
-  return "Login Successfully";
+  return token ;
 	}
 
 	@Override
