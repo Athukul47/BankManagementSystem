@@ -1,5 +1,8 @@
 package com.example.Bankmangement.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.example.Bankmangement.entity.Loan;
@@ -12,6 +15,8 @@ import com.example.Bankmangement.service.LoanService;
 @Service
 public class LoanServiceImpl implements LoanService {
 	
+	@Autowired
+    private JavaMailSender mailSender;
 	private LoanRepository loanRepository;
 	private UserRepository userRepository;
 	
@@ -31,6 +36,62 @@ public class LoanServiceImpl implements LoanService {
 		//entity to dto
 		return mapToDto(newloan);
 	}
+
+	
+public String approveLoan(long id ,LoanDto loa) {
+		
+		Loan loan=loanRepository.findById(id).get();
+		
+	    loan.setMessage(loa.getMessage());
+		loan.setStatus("Approved");
+		loanRepository.save(loan);
+		
+		 String email=loanRepository.getEmail(id);
+		
+			String subject= "Loan  Related information  ";
+			
+			
+			String body=  "Hi   greeting from xyz bank  .Your loan tracking id is  . Your "+loan.getLoanType()+
+             " is accepted  successfully . Thank you for choosing our bank . "+loan.getMessage();
+			
+			SimpleMailMessage message=new SimpleMailMessage();
+			message.setFrom("atharvakulkarni624@gmail.com");
+			message.setTo(email);
+			message.setText(body);
+			message.setSubject(subject);	
+			mailSender.send(message);
+			
+		return "Loan Approved  ";
+	}
+
+
+
+public String rejectLoan(long id ,LoanDto loa) {
+	
+	Loan loan=loanRepository.findById(id).get();
+	
+    loan.setMessage(loa.getMessage());
+	loan.setStatus("Rejected");
+	loanRepository.save(loan);
+	
+	 String email=loanRepository.getEmail(id);
+	
+		String subject= "Loan  Related information  ";
+		
+		
+		String body=  "Hi   greeting from xyz bank  .Your loan tracking id is  . Your "+loan.getLoanType()+
+         " is accepted  successfully . Thank you for choosing our bank . "+loan.getMessage();
+		
+		SimpleMailMessage message=new SimpleMailMessage();
+		message.setFrom("atharvakulkarni624@gmail.com");
+		message.setTo(email);
+		message.setText(body);
+		message.setSubject(subject);	
+		mailSender.send(message);
+		
+	return "Loan rejected";
+}
+
 
 private LoanDto mapToDto(Loan loan)
 	{

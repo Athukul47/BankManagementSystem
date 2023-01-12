@@ -8,4 +8,7 @@ public interface LoanService {
 
  LoanDto applyLoan(long userId, LoanDto loanDto);
 
+ String approveLoan(long id,LoanDto loanDto);
+ String rejectLoan(long id,LoanDto loanDto);
 }
+

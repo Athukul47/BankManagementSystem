@@ -36,6 +36,8 @@ import lombok.NoArgsConstructor;
 		private Date date;
 		private long roi;
 		private int loanDuration;
+		private String status;
+		private String message;
 		@ManyToOne(fetch=FetchType.LAZY)
 		@JoinColumn(name="user_id",nullable=false)
 		private User user;

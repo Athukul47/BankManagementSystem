@@ -82,4 +82,7 @@ public class GlobalException extends ResponseEntityExceptionHandler {
                 webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
     }
-}
+    
+   
+   }
+

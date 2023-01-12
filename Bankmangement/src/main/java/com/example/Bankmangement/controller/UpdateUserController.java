@@ -1,5 +1,7 @@
 package com.example.Bankmangement.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,7 @@ public class UpdateUserController {
 private AuthService authService;
 
 @PutMapping("/update/{id}")
- public ResponseEntity<RegisterDto> updateUser(@RequestBody RegisterDto registerDto ,@PathVariable(name="id") long id)
+ public ResponseEntity<RegisterDto> updateUser(@RequestBody   RegisterDto  registerDto ,@PathVariable(name="id") long id)
 {
 RegisterDto updateResponse= authService.updateDetails(registerDto, id);
 return new ResponseEntity<>(updateResponse,HttpStatus.OK);

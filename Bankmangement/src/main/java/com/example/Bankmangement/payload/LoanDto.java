@@ -14,5 +14,7 @@ public class LoanDto {
 	private Date date;
 	private long roi;
 	private int loanDuration;
+	private String status;
+	private String message;
 	}
 

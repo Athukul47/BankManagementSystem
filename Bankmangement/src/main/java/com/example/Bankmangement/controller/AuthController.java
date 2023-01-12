@@ -1,5 +1,7 @@
 package com.example.Bankmangement.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -47,7 +49,7 @@ public class AuthController {
 	
 	
 	 @PostMapping("/register")
-	    public ResponseEntity<String> register( @RequestBody RegisterDto registerDto)
+	    public ResponseEntity<String> register( @RequestBody  RegisterDto registerDto)
 	    {
 
 	        String response= authService.register(registerDto); 
