@@ -29,6 +29,8 @@ public class LoanServiceImpl implements LoanService {
 	public LoanDto applyLoan(long userId, LoanDto loanDto) {
 		//dto to entity
 		Loan loan=maptoEntity(loanDto);
+		loan.setMessage("Pending");
+		loan.setStatus("Pending");
 		User user=userRepository.findById(userId);
 		//set user to loan entity
 		loan.setUser(user);
@@ -38,58 +40,68 @@ public class LoanServiceImpl implements LoanService {
 	}
 
 	
-public String approveLoan(long id ,LoanDto loa) {
+public LoanDto approveLoan(long id ,LoanDto loa) {
+	Loan loanentity= new Loan();
+	 loanentity=loanRepository.findById(id).get();
+
+	 loanentity.setMessage(loa.getMessage());
+	 loanentity.setStatus("Approved");
+   Loan updatedloan=loanRepository.save(loanentity);
+
+     String email=loanRepository.getEmail(id);
+        String subject="Loan  Related information  ";
+
+
+        String body="Hi   greeting from xyz bank  .Your loan tracking id is   "
+         +loanentity.getLoanType()+"  is accepted  successfully . Thank you for choosing our bank . "+loanentity.getMessage();
+
+        SimpleMailMessage message=new SimpleMailMessage();
+        message.setFrom("atharvakulkarni624@gmail.com");
+        message.setTo(email);
+        message.setText(body);
+        message.setSubject(subject);
+
+        mailSender.send(message);
+        LoanDto loanresponse=new LoanDto();
+        loanresponse=mapToDto(updatedloan);
+        
+      return loanresponse;
 		
-		Loan loan=loanRepository.findById(id).get();
-		
-	    loan.setMessage(loa.getMessage());
-		loan.setStatus("Approved");
-		loanRepository.save(loan);
-		
-		 String email=loanRepository.getEmail(id);
-		
-			String subject= "Loan  Related information  ";
-			
-			
-			String body=  "Hi   greeting from xyz bank  .Your loan tracking id is  . Your "+loan.getLoanType()+
-             " is accepted  successfully . Thank you for choosing our bank . "+loan.getMessage();
-			
-			SimpleMailMessage message=new SimpleMailMessage();
-			message.setFrom("atharvakulkarni624@gmail.com");
-			message.setTo(email);
-			message.setText(body);
-			message.setSubject(subject);	
-			mailSender.send(message);
-			
-		return "Loan Approved";
+
+
 	}
 
 
 
-public String rejectLoan(long id ,LoanDto loa) {
-	
-	Loan loan=loanRepository.findById(id).get();
-	
-    loan.setMessage(loa.getMessage());
-	loan.setStatus("Rejected");
-	loanRepository.save(loan);
-	
-	 String email=loanRepository.getEmail(id);
-	
-		String subject= "Loan  Related information  ";
+public LoanDto rejectLoan(long id ,LoanDto loa) {
+	Loan loanentity= new Loan();
+	 loanentity=loanRepository.findById(id).get();
+
+	 loanentity.setMessage(loa.getMessage());
+	 loanentity.setStatus("Rejected");
+  Loan updatedloan=loanRepository.save(loanentity);
+
+    String email=loanRepository.getEmail(id);
+       String subject="Loan  Related information  ";
+
+
+       String body="Hi   greeting from xyz bank  .Your loan tracking id is   "
+        +loanentity.getLoanType()+"  is accepted  successfully . Thank you for choosing our bank . "+loanentity.getMessage();
+
+       SimpleMailMessage message=new SimpleMailMessage();
+       message.setFrom("atharvakulkarni624@gmail.com");
+       message.setTo(email);
+       message.setText(body);
+       message.setSubject(subject);
+
+       mailSender.send(message);
+       LoanDto loanresponse=new LoanDto();
+       loanresponse=mapToDto(updatedloan);
+       
+     return loanresponse;
 		
-		
-		String body=  "Hi   greeting from xyz bank  .Your loan tracking id is  . Your "+loan.getLoanType()+
-         " is accepted  successfully . Thank you for choosing our bank . "+loan.getMessage();
-		
-		SimpleMailMessage message=new SimpleMailMessage();
-		message.setFrom("atharvakulkarni624@gmail.com");
-		message.setTo(email);
-		message.setText(body);
-		message.setSubject(subject);	
-		mailSender.send(message);
-		
-	return "Loan rejected";
+	
+	
 }
 
 
@@ -101,6 +113,8 @@ private LoanDto mapToDto(Loan loan)
 		loanDto.setLoanAmount(loan.getLoanAmount());
 		loanDto.setDate(loan.getDate());
 		loanDto.setRoi(loan.getRoi());
+		loanDto.setStatus(loan.getStatus());
+		loanDto.setMessage(loan.getMessage());
 		loanDto.setLoanDuration(loan.getLoanDuration());
 		return loanDto;
 	}

@@ -13,7 +13,3 @@ import com.example.Bankmangement.service.impl.AuthServiceImpl;
 
 
 
-class AuthControllerTest {
-
-
-}

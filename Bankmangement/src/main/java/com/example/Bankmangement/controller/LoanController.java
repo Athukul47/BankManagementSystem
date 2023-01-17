@@ -33,16 +33,20 @@ public class LoanController {
 
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/approve/{id}")
-	public String approveLoan(@PathVariable(value="id")  long id ,@RequestBody LoanDto loanDto){
+	public ResponseEntity<LoanDto> approveLoan(@PathVariable(value="id")  long id ,@RequestBody LoanDto loanDto){
 		
-		return loanService.approveLoan(id,loanDto);
+		
+		return new ResponseEntity<>(loanService.approveLoan(id,loanDto),HttpStatus.ACCEPTED);
 	}
+	
+	
+	
 	
 	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/reject/{id}")
-	public String rejectLoan(@PathVariable(value="id")  long id ,@RequestBody LoanDto loanDto){
+	public ResponseEntity<LoanDto>  rejectLoan(@PathVariable(value="id")  long id ,@RequestBody LoanDto loanDto){
 		
-		return loanService.rejectLoan(id,loanDto);
+		return new ResponseEntity<>(loanService.rejectLoan(id,loanDto),HttpStatus.ACCEPTED);
 	}
 	
 
