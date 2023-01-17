@@ -15,7 +15,7 @@ import com.example.Bankmangement.payload.LoanDto;
 import com.example.Bankmangement.service.LoanService;
 
 @Controller
-@RequestMapping("/api")
+@RequestMapping("/authorize")
 public class LoanController {
 	
 	@Autowired

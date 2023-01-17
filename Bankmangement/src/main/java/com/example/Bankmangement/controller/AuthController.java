@@ -18,7 +18,7 @@ import com.example.Bankmangement.payload.RegisterDto;
 import com.example.Bankmangement.service.AuthService;
 
 @Controller
-@RequestMapping("/api/auth")
+@RequestMapping("/authorize")
 public class AuthController {
 
 	
@@ -49,12 +49,25 @@ public class AuthController {
 	
 	
 	 @PostMapping("/register")
-	    public ResponseEntity<String> register( @RequestBody  RegisterDto registerDto)
+	  public ResponseEntity<String> register( @Valid @RequestBody  RegisterDto registerDto)
 	    {
 
 	        String response= authService.register(registerDto); 
-	        return new ResponseEntity<>(response,HttpStatus.CREATED);
+	      
+		 return new ResponseEntity<>(response,HttpStatus.CREATED);
+		 
 	    }
+	 
+	 @PostMapping("/registeradmin")
+	  public ResponseEntity<String> registerAdmin( @Valid @RequestBody  RegisterDto registerDto)
+	    {
+
+	        String response= authService.registerAdmin(registerDto); 
+	      
+		 return new ResponseEntity<>(response,HttpStatus.CREATED);
+		 
+	    }
+	 
 	 
 	
 }

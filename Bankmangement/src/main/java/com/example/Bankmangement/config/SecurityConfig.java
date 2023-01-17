@@ -52,7 +52,7 @@ public class SecurityConfig{
 	     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 	        http.csrf().disable()
 	            .authorizeHttpRequests((authz) -> authz
-	            		.antMatchers("/api/auth/**").permitAll()
+	            		.antMatchers("/authorize/**").permitAll()
 	            		.antMatchers("/error").permitAll()
 	                .anyRequest().authenticated()).exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint)
 	                	).sessionManagement(session -> session

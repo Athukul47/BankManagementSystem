@@ -24,27 +24,25 @@ public class RegisterDto {
 	//@NotEmpty
 	//@Size(max=50,message="name should be less than 50 ")
 	
-	private String name;
-	
-	private String username;
-
-	private String password;
-	
-	private String address;
-	
-	private String state;
-	
-	private String country;
-	
-	private String email;
-	
+	@NotEmpty
+    @Size(max=50,message="name should be less than 50 characters ")
+    private String name;
+    @Size(min=8,max=20,message="username should be of 8 to 20 character")
+ 
+    private String username;   
+    private String password;
+    @Size(max=200,message="address can't be more than 200 character")
+    private String address;
+    @Size(max=50,message="state name can't be more than 50 character")
+    private String state;
+    @Size(max=100,message="country name can't be more than 100 character")
+    private String country;
+    @Email(message="format should be valid")
+    private String email;
+    @Size(min=10,max=10,message="Enter valid pan number")
     private String pan;
-	
-	private long contactno;
-	
-	
-	private Date dob;
-	
-	private String accountType;
-
+    private long contactno;
+    private Date dob;
+    @Size(max=50,message="size of account type can't be more than 50")
+    private String accountType;
 }

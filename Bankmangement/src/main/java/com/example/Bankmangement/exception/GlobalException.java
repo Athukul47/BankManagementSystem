@@ -83,6 +83,20 @@ public class GlobalException extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
     }
     
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                   HttpHeaders headers,
+                                                                   HttpStatus status,
+                                                                   WebRequest request) {
+         Map<String, String> errors = new HashMap<>();
+         ex.getBindingResult().getAllErrors().forEach((error) ->{
+             String fieldName = ((FieldError)error).getField();
+             String message = error.getDefaultMessage();
+             errors.put(fieldName, message);
+         });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+     }
+    
    
    }
 

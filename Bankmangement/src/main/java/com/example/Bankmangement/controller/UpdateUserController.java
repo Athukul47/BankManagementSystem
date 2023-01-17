@@ -15,13 +15,13 @@ import com.example.Bankmangement.payload.RegisterDto;
 import com.example.Bankmangement.service.AuthService;
 
 @Controller
-@RequestMapping("/api")
+@RequestMapping("/authorize")
 public class UpdateUserController {
 	@Autowired
 private AuthService authService;
 
 @PutMapping("/update/{id}")
- public ResponseEntity<RegisterDto> updateUser(@RequestBody   RegisterDto  registerDto ,@PathVariable(name="id") long id)
+ public ResponseEntity<RegisterDto> updateUser(@Valid @RequestBody   RegisterDto  registerDto ,@PathVariable(name="id") long id)
 {
 RegisterDto updateResponse= authService.updateDetails(registerDto, id);
 return new ResponseEntity<>(updateResponse,HttpStatus.OK);

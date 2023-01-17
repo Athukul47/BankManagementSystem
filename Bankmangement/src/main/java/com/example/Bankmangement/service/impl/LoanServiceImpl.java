@@ -61,7 +61,7 @@ public String approveLoan(long id ,LoanDto loa) {
 			message.setSubject(subject);	
 			mailSender.send(message);
 			
-		return "Loan Approved  ";
+		return "Loan Approved";
 	}
 
 

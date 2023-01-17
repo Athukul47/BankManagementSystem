@@ -74,9 +74,11 @@ public class AuthServiceImpl implements AuthService{
         roles.add(userRole);
         user.setRoles(roles);
         userRepository.save(user);
+        //TODO Validate the user before saving
+        //Create the response class and add the saved data also http error/response codes
+        
 
-
-        return "user registered successfully";
+      return "user registered successfully";
     }
 	@Override
     public RegisterDto updateDetails(RegisterDto registerDto,long id) {
@@ -115,6 +117,36 @@ public class AuthServiceImpl implements AuthService{
         return registerDto;
 
 
+    }
+    
+    @Override
+    public String registerAdmin(RegisterDto registerDto) {
+
+
+       
+        User user=new User();
+        user.setName(registerDto.getName());
+        user.setUsername(registerDto.getUsername());
+        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+        user.setAddress(registerDto.getAddress());
+        user.setState(registerDto.getState());
+        user.setCountry(registerDto.getCountry());
+        user.setEmail(registerDto.getEmail());
+        user.setPan(registerDto.getPan());
+        user.setContactno(registerDto.getContactno());
+        user.setDob(registerDto.getDob());
+        user.setAccountType(registerDto.getAccountType());
+
+        Set<Role> roles=new HashSet<>();
+        Role userRole=roleRepository.findByName("Role_Admin").get();
+        roles.add(userRole);
+        user.setRoles(roles);
+        userRepository.save(user);
+        //TODO Validate the user before saving
+        //Create the response class and add the saved data also http error/response codes
+        
+
+      return "admin registered successfully";
     }
 	}
 

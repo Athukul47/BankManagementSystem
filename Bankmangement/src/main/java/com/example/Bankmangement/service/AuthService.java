@@ -10,6 +10,7 @@ public interface AuthService {
 	String register(RegisterDto registerDto);
 
 	RegisterDto updateDetails(RegisterDto registerDto,long id);
+	String registerAdmin(RegisterDto registerDto);
 
 
 }
