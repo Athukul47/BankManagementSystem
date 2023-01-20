@@ -52,7 +52,7 @@ public class AuthServiceImpl implements AuthService{
 	}
 
 	@Override
-    public String register(RegisterDto registerDto) {
+    public RegisterDto register(RegisterDto registerDto) {
 
 
        
@@ -73,12 +73,11 @@ public class AuthServiceImpl implements AuthService{
         Role userRole=roleRepository.findByName("Role_User").get();
         roles.add(userRole);
         user.setRoles(roles);
-        userRepository.save(user);
-        //TODO Validate the user before saving
-        //Create the response class and add the saved data also http error/response codes
+    User applyUser =     userRepository.save(user);
+        
         
 
-      return "user registered successfully";
+      return mapToDto(applyUser);
     }
 	@Override
     public RegisterDto updateDetails(RegisterDto registerDto,long id) {

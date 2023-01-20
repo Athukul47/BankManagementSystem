@@ -49,10 +49,10 @@ public class AuthController {
 	
 	
 	 @PostMapping("/register")
-	  public ResponseEntity<String> register( @Valid @RequestBody  RegisterDto registerDto)
+	  public ResponseEntity<RegisterDto> register( @Valid @RequestBody  RegisterDto registerDto)
 	    {
 
-	        String response= authService.register(registerDto); 
+	        RegisterDto response= authService.register(registerDto); 
 	      
 		 return new ResponseEntity<>(response,HttpStatus.CREATED);
 		 
