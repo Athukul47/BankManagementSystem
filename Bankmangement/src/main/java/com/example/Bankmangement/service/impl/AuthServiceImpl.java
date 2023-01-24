@@ -3,6 +3,7 @@ package com.example.Bankmangement.service.impl;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,8 +13,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.Bankmangement.entity.Role;
 import com.example.Bankmangement.entity.User;
-import com.example.Bankmangement.payload.LoginDto;
-import com.example.Bankmangement.payload.RegisterDto;
+import com.example.Bankmangement.exception.LoanApiException;
+import com.example.Bankmangement.payload.CredentialDto;
+import com.example.Bankmangement.payload.UserDto;
 import com.example.Bankmangement.repository.RoleRepository;
 import com.example.Bankmangement.repository.UserRepository;
 import com.example.Bankmangement.security.JwtTokenProvider;
@@ -39,10 +41,10 @@ public class AuthServiceImpl implements AuthService{
 	}
 
 	@Override
-	public String login(LoginDto loginDto) {
+	public String login(CredentialDto credentialDto) {
 	
 
-	Authentication authentication=	authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(),loginDto.getPassword()));
+	Authentication authentication=	authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(credentialDto.getUsername(),credentialDto.getPassword()));
 	
 	SecurityContextHolder.getContext().setAuthentication(authentication);	
 	
@@ -52,100 +54,87 @@ public class AuthServiceImpl implements AuthService{
 	}
 
 	@Override
-    public RegisterDto register(RegisterDto registerDto) {
+    public UserDto register(UserDto userDto) {
 
-
+		if(userRepository.existsByUsername(userDto.getUsername())){
+            throw new LoanApiException(HttpStatus.BAD_REQUEST,"Username Already Exist");
+        }
        
         User user=new User();
-        user.setName(registerDto.getName());
-        user.setUsername(registerDto.getUsername());
-        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-        user.setAddress(registerDto.getAddress());
-        user.setState(registerDto.getState());
-        user.setCountry(registerDto.getCountry());
-        user.setEmail(registerDto.getEmail());
-        user.setPan(registerDto.getPan());
-        user.setContactno(registerDto.getContactno());
-        user.setDob(registerDto.getDob());
-        user.setAccountType(registerDto.getAccountType());
+        user.setName(userDto.getName());
+        user.setUsername(userDto.getUsername());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setAddress(userDto.getAddress());
+        user.setState(userDto.getState());
+        user.setCountry(userDto.getCountry());
+        user.setEmail(userDto.getEmail());
+        user.setPan(userDto.getPan());
+        user.setContactno(userDto.getContactno());
+        user.setDob(userDto.getDob());
+        user.setAccountType(userDto.getAccountType());
 
         Set<Role> roles=new HashSet<>();
         Role userRole=roleRepository.findByName("Role_User").get();
         roles.add(userRole);
         user.setRoles(roles);
-    User applyUser =     userRepository.save(user);
+    User registerUser =     userRepository.save(user);
         
         
 
-      return mapToDto(applyUser);
+      return mapToDto(registerUser);
     }
-	@Override
-    public RegisterDto updateDetails(RegisterDto registerDto,long id) {
-        User user=userRepository.findById(id);
+	
 
-        user.setName(registerDto.getName());
-        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-        user.setAddress(registerDto.getAddress());
-        user.setState(registerDto.getState());
-        user.setCountry(registerDto.getCountry());
-        user.setEmail(registerDto.getEmail());
-        user.setPan(registerDto.getPan());
-        user.setContactno(registerDto.getContactno());
-        user.setDob(registerDto.getDob());
-        user.setAccountType(registerDto.getAccountType());
+    private UserDto mapToDto(User user){
 
-        User updatedUser=userRepository.save(user);
-
-        return mapToDto(updatedUser);
-    }
-
-    private RegisterDto mapToDto(User user){
-
-        RegisterDto registerDto=new RegisterDto();
-        registerDto.setName(user.getName());
-        registerDto.setUsername(user.getUsername());
-        registerDto.setPassword(passwordEncoder.encode(user.getPassword()));
-        registerDto.setAddress(user.getAddress());
-        registerDto.setState(user.getState());
-        registerDto.setCountry(user.getCountry());
-        registerDto.setEmail(user.getEmail());
-        registerDto.setPan(user.getPan());
-        registerDto.setContactno(user.getContactno());
-        registerDto.setDob(user.getDob());
-        registerDto.setAccountType(user.getAccountType());
-        return registerDto;
+        UserDto userDto=new UserDto();
+        userDto.setName(user.getName());
+        userDto.setUsername(user.getUsername());
+        userDto.setPassword(passwordEncoder.encode(user.getPassword()));
+        userDto.setAddress(user.getAddress());
+        userDto.setState(user.getState());
+        userDto.setCountry(user.getCountry());
+        userDto.setEmail(user.getEmail());
+        userDto.setPan(user.getPan());
+        userDto.setContactno(user.getContactno());
+        userDto.setDob(user.getDob());
+        userDto.setAccountType(user.getAccountType());
+        return userDto;
 
 
     }
     
     @Override
-    public String registerAdmin(RegisterDto registerDto) {
+    public UserDto registerAdmin(UserDto userDto) {
 
 
        
         User user=new User();
-        user.setName(registerDto.getName());
-        user.setUsername(registerDto.getUsername());
-        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-        user.setAddress(registerDto.getAddress());
-        user.setState(registerDto.getState());
-        user.setCountry(registerDto.getCountry());
-        user.setEmail(registerDto.getEmail());
-        user.setPan(registerDto.getPan());
-        user.setContactno(registerDto.getContactno());
-        user.setDob(registerDto.getDob());
-        user.setAccountType(registerDto.getAccountType());
+        user.setName(userDto.getName());
+        user.setUsername(userDto.getUsername());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setAddress(userDto.getAddress());
+        user.setState(userDto.getState());
+        user.setCountry(userDto.getCountry());
+        user.setEmail(userDto.getEmail());
+        user.setPan(userDto.getPan());
+        user.setContactno(userDto.getContactno());
+        user.setDob(userDto.getDob());
+        user.setAccountType(userDto.getAccountType());
 
         Set<Role> roles=new HashSet<>();
         Role userRole=roleRepository.findByName("Role_Admin").get();
         roles.add(userRole);
         user.setRoles(roles);
-        userRepository.save(user);
-        //TODO Validate the user before saving
-        //Create the response class and add the saved data also http error/response codes
+        User registerAdmin =     userRepository.save(user);
+        
         
 
-      return "admin registered successfully";
+        return mapToDto(registerAdmin);
+        
+        
+
+      
     }
 	}
 

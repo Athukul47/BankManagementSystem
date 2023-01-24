@@ -15,8 +15,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import com.example.Bankmangement.payload.RegisterDto;
+import com.example.Bankmangement.payload.UserDto;
 import com.example.Bankmangement.service.AuthService;
+import com.example.Bankmangement.service.UserService;
 
 @ExtendWith(MockitoExtension.class)
 public class UpdateUserControllerTest {
@@ -24,15 +25,15 @@ public class UpdateUserControllerTest {
     @InjectMocks
     private UpdateUserController updateUserController;
     @Mock
-    private AuthService authService;
+    private UserService userService;
 
     @Test
     public void testUpdateUser() {
         long id = 1;
-        RegisterDto registerDto = new RegisterDto();
-        when(authService.updateDetails(registerDto, id)).thenReturn(registerDto);
-        ResponseEntity<RegisterDto> response = updateUserController.updateUser(registerDto, id);
+        UserDto userDto = new UserDto();
+        when(userService.updateDetails(userDto, id)).thenReturn(userDto);
+        ResponseEntity<UserDto> response = updateUserController.updateUser(userDto, id);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(registerDto, response.getBody());
+        assertEquals(userDto, response.getBody());
     }
 }

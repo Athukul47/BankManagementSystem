@@ -5,8 +5,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import com.example.Bankmangement.payload.JwtAuthResponse;
-import com.example.Bankmangement.payload.LoginDto;
-import com.example.Bankmangement.payload.RegisterDto;
+import com.example.Bankmangement.payload.CredentialDto;
+import com.example.Bankmangement.payload.UserDto;
 import com.example.Bankmangement.service.AuthService;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,40 +25,41 @@ public class AuthControllerTest {
     @InjectMocks
     private AuthController authController;
 
-    private LoginDto loginDto;
-    private RegisterDto registerDto;
+    private CredentialDto credentialDto;
+    private UserDto userDto;
     private JwtAuthResponse jwtAuthResponse;
 
     @Before
     public void setUp() {
-        loginDto = new LoginDto();
-        registerDto = new RegisterDto();
+        credentialDto= new CredentialDto();
+        userDto = new UserDto();
         jwtAuthResponse = new JwtAuthResponse();
         jwtAuthResponse.setAccessToken("test_token");
     }
 
     @Test
     public void login_validInput() {
-        when(authService.login(any(LoginDto.class))).thenReturn("test_token");
-        ResponseEntity<JwtAuthResponse> response = authController.login(loginDto);
+        when(authService.login(any(CredentialDto.class))).thenReturn("test_token");
+        ResponseEntity<JwtAuthResponse> response = authController.login(credentialDto);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("test_token", response.getBody().getAccessToken());
+       
     }
 
     @Test
     public void register_validInput() {
-        when(authService.register(any(RegisterDto.class))).thenReturn(registerDto);
-        ResponseEntity<RegisterDto> response = authController.register(registerDto);
+        when(authService.register(any(UserDto.class))).thenReturn(userDto);
+        ResponseEntity<UserDto> response = authController.register(userDto);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(registerDto, response.getBody());
+        assertEquals(userDto, response.getBody());
     }
     
     @Test
     public void registerAdmin_validInput() {
-        when(authService.registerAdmin(any(RegisterDto.class))).thenReturn("Success");
-        ResponseEntity<String> response = authController.registerAdmin(registerDto);
+        when(authService.registerAdmin(any(UserDto.class))).thenReturn(userDto);
+        ResponseEntity<UserDto> response = authController.registerAdmin(userDto);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals("Success", response.getBody());

@@ -82,6 +82,14 @@ public class GlobalException extends ResponseEntityExceptionHandler {
                 webRequest.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
     }
+    @ExceptionHandler(LoanApiException.class)
+    public ResponseEntity<ErrorDetails> handleBlogAPIException(LoanApiException exception,
+                                                                        WebRequest webRequest){
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage(),
+              webRequest.getDescription(false));
+       return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+   }
+    
     
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
@@ -96,6 +104,7 @@ public class GlobalException extends ResponseEntityExceptionHandler {
          });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
      }
+    
     
    
    }

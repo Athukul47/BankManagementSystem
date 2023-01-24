@@ -18,7 +18,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterDto {	
+public class UserDto {	
 
 	
 	//@NotEmpty
@@ -29,7 +29,8 @@ public class RegisterDto {
     private String name;
     @Size(min=8,max=20,message="username should be of 8 to 20 character")
  
-    private String username;   
+    private String username;
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$",message="enter valid password consisting of Capital letter,smallletter numbers and special character")
     private String password;
     @Size(max=200,message="address can't be more than 200 character")
     private String address;

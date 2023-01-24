@@ -14,100 +14,85 @@ import com.example.Bankmangement.service.LoanService;
 
 @Service
 public class LoanServiceImpl implements LoanService {
-	
+
 	@Autowired
-    private JavaMailSender mailSender;
+	private JavaMailSender mailSender;
 	private LoanRepository loanRepository;
 	private UserRepository userRepository;
-	
-	public LoanServiceImpl(LoanRepository loanRepository , UserRepository userRepository) {
+
+	public LoanServiceImpl(LoanRepository loanRepository, UserRepository userRepository) {
 		this.loanRepository = loanRepository;
-		this.userRepository=userRepository;
+		this.userRepository = userRepository;
 	}
-   //apply Loan 
+
+	// apply Loan
 	@Override
 	public LoanDto applyLoan(long userId, LoanDto loanDto) {
-		//dto to entity
-		Loan loan=maptoEntity(loanDto);
+		// dto to entity
+		Loan loan = maptoEntity(loanDto);
 		loan.setMessage("Pending");
 		loan.setStatus("Pending");
-		User user=userRepository.findById(userId);
-		//set user to loan entity
+		User user = userRepository.findById(userId);
+		// set user to loan entity
 		loan.setUser(user);
-		Loan newloan=loanRepository.save(loan);
-		//entity to dto
+		Loan newloan = loanRepository.save(loan);
+		// entity to dto
 		return mapToDto(newloan);
 	}
 
-	
-public LoanDto approveLoan(long id ,LoanDto loa) {
-	Loan loanentity= new Loan();
-	 loanentity=loanRepository.findById(id).get();
+	public LoanDto approveLoan(long id, LoanDto loa) {
+		Loan loanentity = new Loan();
+		loanentity = loanRepository.findById(id).get();
+		loanentity.setMessage(loa.getMessage());
+		loanentity.setStatus("Approved");
+		Loan updatedloan = loanRepository.save(loanentity);
+		String email = loanRepository.getEmail(id);
+		String subject = "Loan  Related information  ";
+		String body = "Hi   greeting from xyz bank  .Your loan tracking id is   " + loanentity.getLoanType()
+				+ "  is accepted  successfully . Thank you for choosing our bank . " + loanentity.getMessage();
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("atharvakulkarni624@gmail.com");
+		message.setTo(email);
+		message.setText(body);
+		message.setSubject(subject);
+		mailSender.send(message);
+		LoanDto loanresponse = new LoanDto();
+		loanresponse = mapToDto(updatedloan);
 
-	 loanentity.setMessage(loa.getMessage());
-	 loanentity.setStatus("Approved");
-   Loan updatedloan=loanRepository.save(loanentity);
-
-     String email=loanRepository.getEmail(id);
-        String subject="Loan  Related information  ";
-
-
-        String body="Hi   greeting from xyz bank  .Your loan tracking id is   "
-         +loanentity.getLoanType()+"  is accepted  successfully . Thank you for choosing our bank . "+loanentity.getMessage();
-
-        SimpleMailMessage message=new SimpleMailMessage();
-        message.setFrom("atharvakulkarni624@gmail.com");
-        message.setTo(email);
-        message.setText(body);
-        message.setSubject(subject);
-
-        mailSender.send(message);
-        LoanDto loanresponse=new LoanDto();
-        loanresponse=mapToDto(updatedloan);
-        
-      return loanresponse;
-		
-
+		return loanresponse;
 
 	}
 
+	public LoanDto rejectLoan(long id, LoanDto loa) {
+		Loan loanentity = new Loan();
+		loanentity = loanRepository.findById(id).get();
 
+		loanentity.setMessage(loa.getMessage());
+		loanentity.setStatus("Rejected");
+		Loan updatedloan = loanRepository.save(loanentity);
 
-public LoanDto rejectLoan(long id ,LoanDto loa) {
-	Loan loanentity= new Loan();
-	 loanentity=loanRepository.findById(id).get();
+		String email = loanRepository.getEmail(id);
+		String subject = "Loan  Related information  ";
 
-	 loanentity.setMessage(loa.getMessage());
-	 loanentity.setStatus("Rejected");
-  Loan updatedloan=loanRepository.save(loanentity);
+		String body = "Hi   greeting from xyz bank  .Your loan tracking id is   " + loanentity.getLoanType()
+				+ "  is rejected. You didnt match the eligibility level. " + loanentity.getMessage();
 
-    String email=loanRepository.getEmail(id);
-       String subject="Loan  Related information  ";
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("atharvakulkarni624@gmail.com");
+		message.setTo(email);
+		message.setText(body);
+		message.setSubject(subject);
 
+		mailSender.send(message);
+		LoanDto loanresponse = new LoanDto();
+		loanresponse = mapToDto(updatedloan);
 
-       String body="Hi   greeting from xyz bank  .Your loan tracking id is   "
-        +loanentity.getLoanType()+"  is accepted  successfully . Thank you for choosing our bank . "+loanentity.getMessage();
+		return loanresponse;
 
-       SimpleMailMessage message=new SimpleMailMessage();
-       message.setFrom("atharvakulkarni624@gmail.com");
-       message.setTo(email);
-       message.setText(body);
-       message.setSubject(subject);
+	}
 
-       mailSender.send(message);
-       LoanDto loanresponse=new LoanDto();
-       loanresponse=mapToDto(updatedloan);
-       
-     return loanresponse;
-		
-	
-	
-}
-
-
-private LoanDto mapToDto(Loan loan)
-	{
-		LoanDto loanDto=new LoanDto();
+	private LoanDto mapToDto(Loan loan) {
+		LoanDto loanDto = new LoanDto();
 		loanDto.setId(loan.getId());
 		loanDto.setLoanType(loan.getLoanType());
 		loanDto.setLoanAmount(loan.getLoanAmount());
@@ -118,10 +103,9 @@ private LoanDto mapToDto(Loan loan)
 		loanDto.setLoanDuration(loan.getLoanDuration());
 		return loanDto;
 	}
-	
-	private Loan maptoEntity(LoanDto loanDto)
-	{
-		Loan loan =new Loan();
+
+	private Loan maptoEntity(LoanDto loanDto) {
+		Loan loan = new Loan();
 		loan.setId(loanDto.getId());
 		loan.setLoanType(loanDto.getLoanType());
 		loan.setLoanAmount(loanDto.getLoanAmount());
@@ -130,7 +114,5 @@ private LoanDto mapToDto(Loan loan)
 		loan.setLoanDuration(loanDto.getLoanDuration());
 		return loan;
 	}
-
-	
 
 }

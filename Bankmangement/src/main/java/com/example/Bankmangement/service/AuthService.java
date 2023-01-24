@@ -1,16 +1,16 @@
 package com.example.Bankmangement.service;
 
-import com.example.Bankmangement.payload.LoginDto;
-import com.example.Bankmangement.payload.RegisterDto;
+import com.example.Bankmangement.payload.CredentialDto;
+import com.example.Bankmangement.payload.UserDto;
 
 public interface AuthService {
 	
-	String login(LoginDto loginDto);
+	String login(CredentialDto credentialDto);
 	
-	RegisterDto register(RegisterDto registerDto);
+	UserDto register(UserDto userDto);
 
-	RegisterDto updateDetails(RegisterDto registerDto,long id);
-	String registerAdmin(RegisterDto registerDto);
+	
+	UserDto registerAdmin(UserDto userDto);
 
 
 }

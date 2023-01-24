@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 //import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Bankmangement.payload.JwtAuthResponse;
-import com.example.Bankmangement.payload.LoginDto;
-import com.example.Bankmangement.payload.RegisterDto;
+import com.example.Bankmangement.payload.CredentialDto;
+import com.example.Bankmangement.payload.UserDto;
 import com.example.Bankmangement.service.AuthService;
 
 @Controller
@@ -32,11 +32,11 @@ public class AuthController {
 	//login validation 
 	@PostMapping("/login")
 
-    public ResponseEntity< JwtAuthResponse> login(@RequestBody LoginDto loginDto)
+    public ResponseEntity< JwtAuthResponse> login(@RequestBody CredentialDto credentialDto)
 
     {
 
-        String token =authService.login(loginDto);
+        String token =authService.login(credentialDto);
         
         JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
         jwtAuthResponse.setAccessToken(token);
@@ -49,20 +49,20 @@ public class AuthController {
 	
 	
 	 @PostMapping("/register")
-	  public ResponseEntity<RegisterDto> register( @Valid @RequestBody  RegisterDto registerDto)
+	  public ResponseEntity<UserDto> register( @Valid @RequestBody  UserDto userDto)
 	    {
 
-	        RegisterDto response= authService.register(registerDto); 
+	        UserDto response= authService.register(userDto); 
 	      
 		 return new ResponseEntity<>(response,HttpStatus.CREATED);
 		 
 	    }
 	 
 	 @PostMapping("/registeradmin")
-	  public ResponseEntity<String> registerAdmin( @Valid @RequestBody  RegisterDto registerDto)
+	  public ResponseEntity<UserDto> registerAdmin( @Valid @RequestBody  UserDto userDto)
 	    {
 
-	        String response= authService.registerAdmin(registerDto); 
+	        UserDto response= authService.registerAdmin(userDto); 
 	      
 		 return new ResponseEntity<>(response,HttpStatus.CREATED);
 		 
