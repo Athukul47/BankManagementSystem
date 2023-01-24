@@ -8,6 +8,8 @@ import com.example.Bankmangement.payload.JwtAuthResponse;
 import com.example.Bankmangement.payload.CredentialDto;
 import com.example.Bankmangement.payload.UserDto;
 import com.example.Bankmangement.service.AuthService;
+import com.example.Bankmangement.service.UserService;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 @RunWith(MockitoJUnitRunner.class)
 public class AuthControllerTest {
     @Mock
+    private UserService userService;
     private AuthService authService;
 
     @InjectMocks
@@ -49,7 +52,7 @@ public class AuthControllerTest {
 
     @Test
     public void register_validInput() {
-        when(authService.register(any(UserDto.class))).thenReturn(userDto);
+        when(userService.register(any(UserDto.class))).thenReturn(userDto);
         ResponseEntity<UserDto> response = authController.register(userDto);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -58,7 +61,7 @@ public class AuthControllerTest {
     
     @Test
     public void registerAdmin_validInput() {
-        when(authService.registerAdmin(any(UserDto.class))).thenReturn(userDto);
+        when(userService.registerAdmin(any(UserDto.class))).thenReturn(userDto);
         ResponseEntity<UserDto> response = authController.registerAdmin(userDto);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());

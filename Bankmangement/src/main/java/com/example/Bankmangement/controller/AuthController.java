@@ -2,6 +2,7 @@ package com.example.Bankmangement.controller;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,12 +17,14 @@ import com.example.Bankmangement.payload.JwtAuthResponse;
 import com.example.Bankmangement.payload.CredentialDto;
 import com.example.Bankmangement.payload.UserDto;
 import com.example.Bankmangement.service.AuthService;
+import com.example.Bankmangement.service.UserService;
 
 @Controller
 @RequestMapping("/authorize")
 public class AuthController {
 
-	
+	@Autowired
+	private UserService userService;
 	private AuthService authService;
 
 	public AuthController(AuthService authService) {
@@ -52,7 +55,7 @@ public class AuthController {
 	  public ResponseEntity<UserDto> register( @Valid @RequestBody  UserDto userDto)
 	    {
 
-	        UserDto response= authService.register(userDto); 
+	        UserDto response= userService.register(userDto);
 	      
 		 return new ResponseEntity<>(response,HttpStatus.CREATED);
 		 
@@ -62,7 +65,7 @@ public class AuthController {
 	  public ResponseEntity<UserDto> registerAdmin( @Valid @RequestBody  UserDto userDto)
 	    {
 
-	        UserDto response= authService.registerAdmin(userDto); 
+	        UserDto response= userService.registerAdmin(userDto);
 	      
 		 return new ResponseEntity<>(response,HttpStatus.CREATED);
 		 

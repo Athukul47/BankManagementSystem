@@ -7,10 +7,6 @@ public interface AuthService {
 	
 	String login(CredentialDto credentialDto);
 	
-	UserDto register(UserDto userDto);
-
 	
-	UserDto registerAdmin(UserDto userDto);
-
 
 }

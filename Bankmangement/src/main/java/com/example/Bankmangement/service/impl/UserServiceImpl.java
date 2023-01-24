@@ -1,11 +1,18 @@
 package com.example.Bankmangement.service.impl;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.Bankmangement.entity.Role;
 import com.example.Bankmangement.entity.User;
+import com.example.Bankmangement.exception.LoanApiException;
 import com.example.Bankmangement.payload.UserDto;
+import com.example.Bankmangement.repository.RoleRepository;
 import com.example.Bankmangement.repository.UserRepository;
 import com.example.Bankmangement.service.UserService;
 
@@ -18,7 +25,8 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+	@Autowired
+	private RoleRepository roleRepository;
 	@Override
     public UserDto updateDetails(UserDto userDto,long id) {
         User user=userRepository.findById(id);
@@ -39,6 +47,73 @@ public class UserServiceImpl implements UserService {
         return mapToDto(updatedUser);
     }
 	
+	
+	@Override
+    public UserDto register(UserDto userDto) {
+
+		if(userRepository.existsByUsername(userDto.getUsername())){
+            throw new LoanApiException(HttpStatus.BAD_REQUEST,"Username Already Exist");
+        }
+       
+        User user=new User();
+        user.setName(userDto.getName());
+        user.setUsername(userDto.getUsername());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setAddress(userDto.getAddress());
+        user.setState(userDto.getState());
+        user.setCountry(userDto.getCountry());
+        user.setEmail(userDto.getEmail());
+        user.setPan(userDto.getPan());
+        user.setContactno(userDto.getContactno());
+        user.setDob(userDto.getDob());
+        user.setAccountType(userDto.getAccountType());
+
+        Set<Role> roles=new HashSet<>();
+        Role userRole=roleRepository.findByName("Role_User").get();
+        roles.add(userRole);
+        user.setRoles(roles);
+    User registerUser =     userRepository.save(user);
+        
+        
+
+      return mapToDto(registerUser);
+    }
+	
+
+    
+    
+    @Override
+    public UserDto registerAdmin(UserDto userDto) {
+
+
+       
+        User user=new User();
+        user.setName(userDto.getName());
+        user.setUsername(userDto.getUsername());
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        user.setAddress(userDto.getAddress());
+        user.setState(userDto.getState());
+        user.setCountry(userDto.getCountry());
+        user.setEmail(userDto.getEmail());
+        user.setPan(userDto.getPan());
+        user.setContactno(userDto.getContactno());
+        user.setDob(userDto.getDob());
+        user.setAccountType(userDto.getAccountType());
+
+        Set<Role> roles=new HashSet<>();
+        Role userRole=roleRepository.findByName("Role_Admin").get();
+        roles.add(userRole);
+        user.setRoles(roles);
+        User registerAdmin =     userRepository.save(user);
+        
+        
+
+        return mapToDto(registerAdmin);
+        
+        
+
+      
+    }
 	private UserDto mapToDto(User user){
 
         UserDto userDto=new UserDto();
