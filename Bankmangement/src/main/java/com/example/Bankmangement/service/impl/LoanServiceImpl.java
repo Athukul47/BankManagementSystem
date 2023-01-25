@@ -1,5 +1,8 @@
 package com.example.Bankmangement.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -89,6 +92,21 @@ public class LoanServiceImpl implements LoanService {
 
 		return loanresponse;
 
+	}
+//	@Override
+//	public List<LoanDto> showAllLoan() {
+//		List<Loan> loans=loanRepository.findAll();
+//		List<LoanDto> loansDto =  loans.stream().map(loan ->mapToDto(loan)).collect(Collectors.toList());
+//		
+//		return loansDto;
+//		
+//	    
+//	}
+	@Override
+	public List<LoanDto> showAllLoan(){
+		List<Loan> loans = loanRepository.findAll();
+		return loans.stream().map(loan ->mapToDto(loan)).collect(Collectors.toList());
+		
 	}
 
 	private LoanDto mapToDto(Loan loan) {

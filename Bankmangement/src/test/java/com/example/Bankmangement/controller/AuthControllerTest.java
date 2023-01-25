@@ -65,6 +65,6 @@ public class AuthControllerTest {
         ResponseEntity<UserDto> response = authController.registerAdmin(userDto);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals("Success", response.getBody());
+        assertEquals(userDto, response.getBody());
     }
 }

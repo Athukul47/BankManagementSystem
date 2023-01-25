@@ -1,20 +1,24 @@
 package com.example.Bankmangement.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Bankmangement.payload.LoanDto;
 import com.example.Bankmangement.service.LoanService;
 
-@Controller
+@RestController
 @RequestMapping("/authorize")
 public class LoanController {
 	
@@ -49,5 +53,17 @@ public class LoanController {
 		return new ResponseEntity<>(loanService.rejectLoan(id,loanDto),HttpStatus.ACCEPTED);
 	}
 	
+	//@PreAuthorize("hasRole('ADMIN')")
+//	@GetMapping("/getloans")
+//	public List<LoanDto> allLoan(){
+//		System.out.println("Inside get all loans");
+//		return loanService.showAllLoan();
+//	}
+	@PreAuthorize("hasRole('ADMIN')")
+@GetMapping("/getloans")
+public List<LoanDto> allLoan(){
+	return loanService.showAllLoan();
+}
+
 
 }
