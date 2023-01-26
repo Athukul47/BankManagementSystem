@@ -1,7 +1,7 @@
 package com.example.Bankmangement.service;
 
-import com.example.Bankmangement.payload.CredentialDto;
-import com.example.Bankmangement.payload.UserDto;
+import com.example.bankmangement.payload.CredentialDto;
+
 
 public interface AuthService {
 	

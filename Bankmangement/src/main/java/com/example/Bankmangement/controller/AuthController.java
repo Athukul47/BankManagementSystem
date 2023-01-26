@@ -6,18 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Bankmangement.payload.JwtAuthResponse;
-import com.example.Bankmangement.payload.CredentialDto;
-import com.example.Bankmangement.payload.UserDto;
-import com.example.Bankmangement.service.AuthService;
-import com.example.Bankmangement.service.UserService;
+import com.example.bankmangement.payload.CredentialDto;
+import com.example.bankmangement.payload.JwtAuthResponse;
+import com.example.bankmangement.payload.UserDto;
+import com.example.bankmangement.service.AuthService;
+import com.example.bankmangement.service.UserService;
 
 @Controller
 @RequestMapping("/authorize")

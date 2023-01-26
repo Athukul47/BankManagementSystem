@@ -1,11 +1,10 @@
 package com.example.Bankmangement.repository;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.Bankmangement.entity.User;
+import com.example.bankmangement.entity.User;
 
 public interface UserRepository extends JpaRepository<User,Long>{
 

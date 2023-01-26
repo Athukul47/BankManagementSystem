@@ -2,6 +2,8 @@ package com.example.Bankmangement.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -17,11 +19,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.example.Bankmangement.payload.LoanDto;
-import com.example.Bankmangement.service.LoanService;
+import com.example.bankmangement.controller.LoanController;
+import com.example.bankmangement.payload.LoanDto;
+import com.example.bankmangement.service.LoanService;
 
 @ExtendWith(MockitoExtension.class)
-public class LoanControllerTest {
+ class LoanControllerTest {
 
     private MockMvc mockMvc;
 
@@ -32,7 +35,7 @@ public class LoanControllerTest {
     private LoanController loanController;
 
     @Test
-    public void approveLoan_ShouldReturnAccepted() throws Exception {
+     void approveLoan_ShouldReturnAccepted() throws Exception {
         when(loanService.approveLoan(anyLong(), any(LoanDto.class))).thenReturn(new LoanDto());
 
         mockMvc.perform(put("/authorize/approve/{id}", 1L)
@@ -40,10 +43,12 @@ public class LoanControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
                 .andExpect(status().isAccepted());
+       
+        
     }
 
     @Test
-    public void rejectLoan_ShouldReturnAccepted() throws Exception {
+     void rejectLoan_ShouldReturnAccepted() throws Exception {
         when(loanService.rejectLoan(anyLong(), any(LoanDto.class))).thenReturn(new LoanDto());
 
         mockMvc.perform(put("/authorize/reject/{id}", 1L)
@@ -51,6 +56,7 @@ public class LoanControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
                 .andExpect(status().isAccepted());
+        
     }
 
     @BeforeEach

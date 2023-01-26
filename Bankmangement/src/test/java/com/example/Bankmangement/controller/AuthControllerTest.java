@@ -2,13 +2,9 @@ package com.example.Bankmangement.controller;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import com.example.Bankmangement.payload.JwtAuthResponse;
-import com.example.Bankmangement.payload.CredentialDto;
-import com.example.Bankmangement.payload.UserDto;
-import com.example.Bankmangement.service.AuthService;
-import com.example.Bankmangement.service.UserService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +14,13 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import com.example.bankmangement.controller.AuthController;
+import com.example.bankmangement.payload.CredentialDto;
+import com.example.bankmangement.payload.JwtAuthResponse;
+import com.example.bankmangement.payload.UserDto;
+import com.example.bankmangement.service.AuthService;
+import com.example.bankmangement.service.UserService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AuthControllerTest {
@@ -47,6 +50,8 @@ public class AuthControllerTest {
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("test_token", response.getBody().getAccessToken());
+        
+        verify(authService).login(credentialDto);
        
     }
 
@@ -57,6 +62,7 @@ public class AuthControllerTest {
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(userDto, response.getBody());
+        verify(userService,times(1)).register(userDto);
     }
     
     @Test
@@ -66,5 +72,6 @@ public class AuthControllerTest {
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(userDto, response.getBody());
+        verify(userService, times(1)).registerAdmin(userDto);
     }
 }

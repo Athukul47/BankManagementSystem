@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import com.example.Bankmangement.entity.User;
-import com.example.Bankmangement.repository.UserRepository;
+import com.example.bankmangement.entity.User;
+import com.example.bankmangement.repository.UserRepository;
 
 
 @SpringBootTest

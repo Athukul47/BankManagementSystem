@@ -8,13 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.Bankmangement.entity.Role;
-import com.example.Bankmangement.entity.User;
-import com.example.Bankmangement.exception.LoanApiException;
-import com.example.Bankmangement.payload.UserDto;
-import com.example.Bankmangement.repository.RoleRepository;
-import com.example.Bankmangement.repository.UserRepository;
-import com.example.Bankmangement.service.UserService;
+import com.example.bankmangement.entity.Role;
+import com.example.bankmangement.entity.User;
+import com.example.bankmangement.exception.LoanApiException;
+import com.example.bankmangement.payload.UserDto;
+import com.example.bankmangement.repository.RoleRepository;
+import com.example.bankmangement.repository.UserRepository;
+import com.example.bankmangement.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {

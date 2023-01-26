@@ -8,12 +8,12 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.example.Bankmangement.entity.Loan;
-import com.example.Bankmangement.entity.User;
-import com.example.Bankmangement.payload.LoanDto;
-import com.example.Bankmangement.repository.LoanRepository;
-import com.example.Bankmangement.repository.UserRepository;
-import com.example.Bankmangement.service.LoanService;
+import com.example.bankmangement.entity.Loan;
+import com.example.bankmangement.entity.User;
+import com.example.bankmangement.payload.LoanDto;
+import com.example.bankmangement.repository.LoanRepository;
+import com.example.bankmangement.repository.UserRepository;
+import com.example.bankmangement.service.LoanService;
 
 @Service
 public class LoanServiceImpl implements LoanService {
@@ -93,17 +93,9 @@ public class LoanServiceImpl implements LoanService {
 		return loanresponse;
 
 	}
-//	@Override
-//	public List<LoanDto> showAllLoan() {
-//		List<Loan> loans=loanRepository.findAll();
-//		List<LoanDto> loansDto =  loans.stream().map(loan ->mapToDto(loan)).collect(Collectors.toList());
-//		
-//		return loansDto;
-//		
-//	    
-//	}
+
 	@Override
-	public List<LoanDto> showAllLoan(){
+	public List<LoanDto> getAllLoan(){
 		List<Loan> loans = loanRepository.findAll();
 		return loans.stream().map(loan ->mapToDto(loan)).collect(Collectors.toList());
 		

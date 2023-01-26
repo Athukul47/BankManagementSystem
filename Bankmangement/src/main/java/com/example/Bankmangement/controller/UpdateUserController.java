@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.Bankmangement.payload.UserDto;
-import com.example.Bankmangement.service.AuthService;
-import com.example.Bankmangement.service.UserService;
+import com.example.bankmangement.payload.UserDto;
+import com.example.bankmangement.service.UserService;
 
 @Controller
 @RequestMapping("/authorize")

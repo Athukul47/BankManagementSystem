@@ -1,6 +1,6 @@
 package com.example.Bankmangement.service;
 
-import com.example.Bankmangement.payload.UserDto;
+import com.example.bankmangement.payload.UserDto;
 
 public interface UserService {
 	

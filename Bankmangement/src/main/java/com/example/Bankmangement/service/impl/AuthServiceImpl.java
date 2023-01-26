@@ -1,9 +1,5 @@
 package com.example.Bankmangement.service.impl;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,15 +7,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.Bankmangement.entity.Role;
-import com.example.Bankmangement.entity.User;
-import com.example.Bankmangement.exception.LoanApiException;
-import com.example.Bankmangement.payload.CredentialDto;
-import com.example.Bankmangement.payload.UserDto;
-import com.example.Bankmangement.repository.RoleRepository;
-import com.example.Bankmangement.repository.UserRepository;
-import com.example.Bankmangement.security.JwtTokenProvider;
-import com.example.Bankmangement.service.AuthService;
+import com.example.bankmangement.payload.CredentialDto;
+import com.example.bankmangement.repository.RoleRepository;
+import com.example.bankmangement.repository.UserRepository;
+import com.example.bankmangement.security.JwtTokenProvider;
+import com.example.bankmangement.service.AuthService;
 
 @Service
 public class AuthServiceImpl implements AuthService{
@@ -48,9 +40,9 @@ public class AuthServiceImpl implements AuthService{
 	
 	SecurityContextHolder.getContext().setAuthentication(authentication);	
 	
-	String token = jwtTokenProvider.generateToken(authentication);
+	 return jwtTokenProvider.generateToken(authentication);
 
-  return token ;
+  
 	}
 
 	

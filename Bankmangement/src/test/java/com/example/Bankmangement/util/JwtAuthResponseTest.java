@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.Bankmangement.payload.JwtAuthResponse;
+import com.example.bankmangement.payload.JwtAuthResponse;
 
 
 @SpringBootTest
